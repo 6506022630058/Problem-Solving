@@ -35,12 +35,12 @@ class Node:
             return self.right.findval(lkpval)
         else:
             print(str(self.data)+ ' is found')
-    def inorderTraversal(self,root):
+    def InorderTraversal(self,root):
         res = []
         if root:
-            res = self.inorderTraversal(root.left)
+            res = self.InorderTraversal(root.left)
             res.append(root.data)
-            res = res + self.inorderTraversal(root.right)
+            res = res + self.InorderTraversal(root.right)
         return res
     def PreorderTraversal(self,root):
         res = []
@@ -56,17 +56,44 @@ class Node:
             res = res + self.PostorderTraversal(root.right)
             res.append(root.data)
         return res
-
+    def Int(self):return self.data
+    def Delete(self,num):
+        print(self.data)
+        if num < self.data:
+            if self.left != None:
+                self.left = self.left.Delete(num)
+            return self
+        elif num > self.data:
+            if self.right != None:
+                self.right = self.right.Delete(num)
+            return self
+        else:
+            if self.left == None:
+                return self.right
+            elif self.right == None:
+                return self.left
+            else:
+                min_node = self.right.Find_min()
+                self.data = min_node.data
+                self.right = self.right.Delete(min_node.data)
+                return self
+    def Find_min(self):
+        while self.left != None:
+            self = self.left
+        return self
 root = Node(10)
 root.insert(30)
 root.insert(40)
 root.insert(35)
 root.insert(20)
 root.insert(47)
+root.insert(21)
 root.insert(5)
 root.PrintTree()
 print(root.findval(7))
 print(root.findval(35))
-print(root.inorderTraversal(root))
+print(root.InorderTraversal(root))
 print(root.PreorderTraversal(root))
 print(root.PostorderTraversal(root))
+root.Delete(10)
+print(root.PreorderTraversal(root))
