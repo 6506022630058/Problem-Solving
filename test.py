@@ -1,46 +1,30 @@
-class Character:
+import networkx as nx
+import matplotlib.pyplot as plt
+import random
 
-    def __init__(self,datalist):
-        self.name = datalist[0]
-        self.hp = datalist[1]
-        self.atk = datalist[2]
-        self.cr = datalist[3]
-        self.cd = datalist[4]
+def inputlivingthings(num):return [input('Name of living things: ') for _ in range(num)]
 
-def stat():
-        n = input('Name: ')
-        point = 10
-        point1 = 0
-        point2 = 0
-        point3 = 0
-        point4 = 0
-        h = 10+(point1*2)
-        a = 2+(point2*1)
-        r = 2+(point3*2)
-        d = 4+(point4*4)
-        ans = ''
-        while point != 0 and ans != 'q':
-            print(point)
-            print('1)Hp:',10+(point1*2),'\n'
-                  '2)Atk:',a,'\n'
-                  '3)Cri rate:',r,'\n'
-                  '4)Cri dam:',d,'\n')
-            ans = input('stat:')
-            if ans == '1':
-                point -= 1
-                point1 += 1
-            elif ans == '2':
-                point -= 1
-                point2 += 1
-            elif ans == '3':
-                point -= 1
-                point3 += 1
-            elif ans == '4':
-                point -= 1
-                point4 += 1
-            elif ans == 'q':
-                print('exit...')
-        print([n,h,a,r,d])
-        return [n,h,a,r,d]
+colist = ["gold","red","violet","pink","green","violet","orange","grey","blue","yellow","cyan"]
 
-Character(stat())
+network = nx.Graph()
+network.add_nodes_from(inputlivingthings(int(input('Number of living things in this area: '))))
+print(f"This area has {network.number_of_nodes()} living things.")
+
+def inputnetwork():
+    lis = []
+    ans = ''
+    while ans.lower() != 'q':
+        print("Input Who Eat Who, --> Tiger Deer")
+        ans = input(':')
+        if ans.lower() != 'q':
+            lis.append(tuple(ans.split()))
+    print(lis)
+    return lis
+
+network.add_edges_from([('a','b'),('c','b'),('d','b')])
+
+color_list = [random.choice(colist) for _ in range(network.number_of_nodes())]
+plt.figure(figsize=(8, 6))
+plt.title('Huang So R Han', size=10)
+nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=20)
+plt.show()
