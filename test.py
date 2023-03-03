@@ -28,6 +28,6 @@ color_list = [random.choice(colist) for _ in range(network.number_of_nodes())]
 print(findpath(input('Source: ').lower(),input('Destination: ').lower()))
 
 plt.figure(figsize=(8, 6))
-plt.title('Food chains', size=10)
+plt.title('Food Web', size=10)
 nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=20)
 plt.show()
