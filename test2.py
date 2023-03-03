@@ -7,7 +7,7 @@ def inputlivingthings(num):return [input('Name of living things: ').lower() for 
 colist = ["gold","red","violet","pink","green","violet","orange","grey","blue","yellow","cyan"]
 
 network = nx.DiGraph()
-network.add_nodes_from(inputlivingthings(int(input('Number of living things in this area: '))))
+network.add_nodes_from(['1','2','3'],weight=10)
 print(f"This area has {network.number_of_nodes()} living things.")
 
 def inputnetwork():
