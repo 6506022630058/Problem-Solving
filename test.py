@@ -3,23 +3,21 @@ import matplotlib.pyplot as plt
 import random
 
 def readfile(filename):
-    if filename.endswith('.txt') == False:
-        filename += '.txt'
-    lis1 = []
-    lis2 = []
+    if filename.endswith('.txt') == False:filename += '.txt'
+    lisedg,lisnod = [],[]
     filer = open(filename,'r')
     line = filer.readline().rstrip('\n').lower()
     while line != '':
         if len(line.split()) == 2:
-            lis1.append(tuple(line.split()))
+            lisedg.append(tuple(line.split()))
         elif len(line.split()) == 1:
-            lis2.append(line)
+            lisnod.append(line)
         else:
             pass
-        line = filer.readline().rstrip('\n')
+        line = filer.readline().rstrip('\n').lower()
     filer.close()
-    network.add_nodes_from(lis2)
-    network.add_edges_from(lis1)
+    network.add_edges_from(lisedg)
+    network.add_nodes_from(lisnod)
 
 def findpath(src,des):return [path for path in nx.all_simple_paths(network, source=src, target=des)]
 
@@ -27,27 +25,20 @@ def inputlivingthings(num):return [input(f'Name of living things {i+1}: ').lower
 
 def inputnetwork():
     print("\nWho Eat Who, Ex. -->Input: tiger deer\nTo quit --> Input: q\n")
-    lis = []
-    ans = ''
+    lis,ans = [],''
     while ans != 'q':
         ans = input("Input: ").lower()
         if ans != 'q':
             if len(ans.split()) == 2:
                 if ans.split()[0] in network.nodes() and ans.split()[1] in network.nodes():
                     lis.append(tuple(ans.split()))
-                else:
-                    pass
-            else:
-                pass
     return lis
 
 def minmaxpath():
-    lc,fc = '',''
+    lc,fc,res = '','',[]
     while lc not in network.nodes() and fc not in network.nodes():
-        lc = input('Last consumer: ').lower()
-        fc = input('First consumer: ').lower()
+        lc,fc = input('Last consumer: '.lower()),input('First consumer: '.lower())
     allpath = findpath(lc,fc)
-    res = []
     for i in allpath:
         res.append(len(i))
     if res != []:
@@ -67,22 +58,18 @@ def makechoice(num):
     elif num == 2:
         userinput()
     else:
-        print('Invalid number')
-        makechoice(int(input('1) Read File\n2) User Input\nChoice: ')))
+        makechoice(int(input(f'Error:Invalid number\n1) Read File\n2) User Input\nChoice: ')))
         
 def userinput():
     network.add_nodes_from(inputlivingthings(int(input('\nHow many living things in this area: '))))
-    print(f"This area has {network.number_of_nodes()} living things.")
     network.add_edges_from(inputnetwork())
 
 network = nx.DiGraph()
 
 print('---Food Chains Program---')
-
 makechoice(int(input('1) Read File\n2) User Input\nChoice: ')))
 
-print('\n--All living things in this area--\n',network.nodes(),'\n')
-print('--Find min-max path--')
+print('\n--All living things in this area--\n',network.nodes(),'\n','--Find min-max path--')
 minmaxpath()
 
 colist = ["gold","red","violet","pink","green","violet","orange","grey","blue","yellow","cyan"]
