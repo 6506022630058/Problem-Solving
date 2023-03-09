@@ -2,22 +2,47 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
-colist = ["gold","red","violet","pink","green","violet","orange","grey","blue","yellow","cyan"]
-network = nx.Graph()
-network.add_nodes_from([1,2,3,4,5,6,7])
-print(f"This network has now {network.number_of_nodes()} nodes.")
+def findpath(src,des):return [path for path in nx.all_simple_paths(network, source=src, target=des)]
 
-network.add_edge(1,2)
-network.add_edge(1,3)
-network.add_edge(1,4)
-network.add_edge(1,5)
-network.add_edge(2,4)
-network.add_edge(3,5)
-network.add_edge(3,7)
-network.add_edge(5,6)
-network.add_edge(6,7)
-color_list = [random.choice(colist) for _ in range(7)]
+def inputlivingthings(num):return [input(f'Name of living things {i+1}: ').lower() for i in range(num)]
+
+def inputnetwork():
+    print("\n----- Who Eat Who, Ex. --> Tiger Deer\nTo quit --> (Input: q)")
+    lis = []
+    ans = ''
+    while ans != 'q':
+        ans = input("Input: ").lower()
+        if ans != 'q':
+            lis.append(tuple(ans.split()))
+    return lis
+
+def minmaxpath():
+    res = []
+    allpath = findpath(input('Source: ').lower(),input('Destination: ').lower())
+    for i in allpath:
+        res.append(len(i))
+    for i in allpath:
+        if len(i) == min(res):
+            print('min path')
+            print(i)
+        elif len(i) == max(res):
+            print('max path')
+            print(i)
+        else:
+            pass
+
+network = nx.DiGraph()
+
+network.add_nodes_from(inputlivingthings(int(input('Number of living things in this area: '))))
+print(f"This area has {network.number_of_nodes()} living things.")
+
+network.add_edges_from(inputnetwork())
+colist = ["gold","red","violet","pink","green","violet","orange","grey","blue","yellow","cyan"]
+color_list = [random.choice(colist) for _ in range(network.number_of_nodes())]
+
+print(findpath(input('Source: ').lower(),input('Destination: ').lower()))
+minmaxpath()
 plt.figure(figsize=(8, 6))
-plt.title('Huang So R Han', size=10)
+plt.title('Food Web', size=10)
 nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=20)
 plt.show()

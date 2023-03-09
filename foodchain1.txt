@@ -1,0 +1,14 @@
+ant bird
+bird cat
+cat dog
+elephant bird
+fox cat
+ant grass
+ant tree
+bird tree
+horse
+lion cat
+tiger cat
+lion tiger
+zebra
+penguin
