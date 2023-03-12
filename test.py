@@ -2,26 +2,27 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
+def swap(l):return[l[1],l[0]]
+def findpath(src,des):return [path for path in nx.all_simple_paths(network, source=src, target=des)]
+def inputlivingthings(num):return [input(f'Name of living things {i+1}: ').lower() for i in range(num)]
+
 def readfile(filename):
+    global lisedg
     if filename.endswith('.txt') == False:filename += '.txt'
     lisedg,lisnod = [],[]
     filer = open(filename,'r')
     line = filer.readline().rstrip('\n').lower()
     while line != '':
         if len(line.split()) == 2:
-            lisedg.append(tuple(line.split()))
+            lisedg.append(tuple(swap(line.split())))
         elif len(line.split()) == 1:
             lisnod.append(line)
         else:
             pass
         line = filer.readline().rstrip('\n').lower()
     filer.close()
-    network.add_edges_from(lisedg)
     network.add_nodes_from(lisnod)
-
-def findpath(src,des):return [path for path in nx.all_simple_paths(network, source=src, target=des)]
-
-def inputlivingthings(num):return [input(f'Name of living things {i+1}: ').lower() for i in range(num)]
+    network.add_edges_from(lisedg)
 
 def inputnetwork():
     print("\nWho Eat Who, Ex. -->Input: tiger deer\nTo quit --> Input: q\n")
@@ -31,26 +32,25 @@ def inputnetwork():
         if ans != 'q':
             if len(ans.split()) == 2:
                 if ans.split()[0] in network.nodes() and ans.split()[1] in network.nodes():
-                    lis.append(tuple(ans.split()))
+                    lis.append(tuple(swap(ans.split())))
     return lis
 
 def minmaxpath():
-    lc,fc,res = '','',[]
-    while lc not in network.nodes() and fc not in network.nodes():
-        lc,fc = input('Last consumer: '.lower()),input('First consumer: '.lower())
+    print('\n--Find min-max path--\n')
+    lc,fc,res1,resmin,resmax = '','',[],[],[]
+    while lc.lower() not in network.nodes() or fc.lower() not in network.nodes():
+        lc,fc = input('First living thing: '.lower()),input('Last living thing: '.lower())
     allpath = findpath(lc,fc)
     for i in allpath:
-        res.append(len(i))
-    if res != []:
+        res1.append(len(i))
+    if res1 != []:
+        print('\n-All path\n',allpath)
         for i in allpath:
-            if len(i) == min(res):
-                print('Min path')
-                print(i)
-            if len(i) == max(res):
-                print('Max path')
-                print(i)
-    if res == []:
-        print('There is no path')
+            if len(i) == min(res1):resmin.append(i)
+            if len(i) == max(res1):resmax.append(i)
+        print('\n-Min path\n',resmin,'\n\n-Max path\n',resmax,'\n')
+    if res1 == []:
+        print('There is no path\n')
 
 def makechoice(num):
     if num == 1:
@@ -64,17 +64,40 @@ def userinput():
     network.add_nodes_from(inputlivingthings(int(input('\nHow many living things in this area: '))))
     network.add_edges_from(inputnetwork())
 
+def displaygraph():
+    colist = ["gold","red","violet","pink","green","violet","orange","grey","blue","yellow","cyan"]
+    color_list = [random.choice(colist) for _ in range(network.number_of_nodes())]
+    plt.figure(figsize=(8, 6))
+    plt.title('Food Web', size=10)
+    nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=20)
+    plt.show()
+
+def menu():
+    ans = ''
+    while ans != 5:
+        ans = int(input('---Food Chains Program---\n1)Show All Living Things\n'
+                        '2)Display Graph\n3)Find Min-Max Path\n4)Find Relation\n'
+                        '5)Exit Program\nChoice: '))
+        if ans == 1:print('\n--All living things in this area--\n',network.nodes(),'\n')
+        elif ans == 2:displaygraph()
+        elif ans == 3:minmaxpath()
+        elif ans == 4:relation()
+        elif ans == 5:print('Exiting Program...')
+        else:print('Error:Invalid number')
+
+def relation():
+    print('--Relation--')
+    lt,liseat,liseaten = '',[],[]
+    while lt.lower() not in network.nodes():
+        lt = input('Living thing: '.lower())
+    for i in lisedg:
+        if i[0] == lt:liseaten.append(i[1])
+        elif i[1] == lt:liseat.append(i[0])
+    if liseat == []:print(lt,'not eat any livingthing')
+    elif liseat != []:print(lt,'eat',liseat)
+    if liseaten == []:print(lt,'is not eaten by any livingthing')
+    elif liseaten != []:print(lt,'is eaten by',liseaten)
+
 network = nx.DiGraph()
-
-print('---Food Chains Program---')
-makechoice(int(input('1) Read File\n2) User Input\nChoice: ')))
-
-print('\n--All living things in this area--\n',network.nodes(),'\n','--Find min-max path--')
-minmaxpath()
-
-colist = ["gold","red","violet","pink","green","violet","orange","grey","blue","yellow","cyan"]
-color_list = [random.choice(colist) for _ in range(network.number_of_nodes())]
-plt.figure(figsize=(8, 6))
-plt.title('Food Web', size=10)
-nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=20)
-plt.show()
+makechoice(int(input('---Food Chains Program---\n1) Read File\n2) User Input\nChoice: ')))
+menu()
