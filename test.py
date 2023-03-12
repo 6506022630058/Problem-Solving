@@ -36,19 +36,23 @@ def inputnetwork():
     return lis
 
 def minmaxpath():
-    print('\n--Find min-max path--\n')
+    print('\n--Find min-max path--')
     lc,fc,res1,resmin,resmax = '','',[],[],[]
     while lc.lower() not in network.nodes() or fc.lower() not in network.nodes():
-        lc,fc = input('First living thing: '.lower()),input('Last living thing: '.lower())
+        lc,fc = input('From: ').lower(),input('To: ').lower()
     allpath = findpath(lc,fc)
     for i in allpath:
         res1.append(len(i))
     if res1 != []:
-        print('\n-All path\n',allpath)
+        print('\n-All path')
         for i in allpath:
+            print(i,'\t')
             if len(i) == min(res1):resmin.append(i)
             if len(i) == max(res1):resmax.append(i)
-        print('\n-Min path\n',resmin,'\n\n-Max path\n',resmax,'\n')
+        print('\n-Min path')
+        for i in resmin:print(i)
+        print('\n-Max path')
+        for i in resmax:print(i)
     if res1 == []:
         print('There is no path\n')
 
@@ -69,15 +73,15 @@ def displaygraph():
     color_list = [random.choice(colist) for _ in range(network.number_of_nodes())]
     plt.figure(figsize=(8, 6))
     plt.title('Food Web', size=10)
-    nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=20)
+    nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=10)
     plt.show()
 
 def menu():
     ans = ''
     while ans != 5:
-        ans = int(input('---Food Chains Program---\n1)Show All Living Things\n'
-                        '2)Display Graph\n3)Find Min-Max Path\n4)Find Relation\n'
-                        '5)Exit Program\nChoice: '))
+        ans = int(input('\n---Food Chains Program---\n1) Show All Living Things\n'
+                        '2) Display Graph\n3) Find Min-Max Path\n4) Find Relation\n'
+                        '5) Exit Program\nChoice: '))
         if ans == 1:print('\n--All living things in this area--\n',network.nodes(),'\n')
         elif ans == 2:displaygraph()
         elif ans == 3:minmaxpath()
@@ -86,10 +90,10 @@ def menu():
         else:print('Error:Invalid number')
 
 def relation():
-    print('--Relation--')
+    print('\n--Relation--')
     lt,liseat,liseaten = '',[],[]
     while lt.lower() not in network.nodes():
-        lt = input('Living thing: '.lower())
+        lt = input('Living thing: ').lower()
     for i in lisedg:
         if i[0] == lt:liseaten.append(i[1])
         elif i[1] == lt:liseat.append(i[0])
