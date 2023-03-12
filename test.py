@@ -69,11 +69,11 @@ def userinput():
     network.add_edges_from(inputnetwork())
 
 def displaygraph():
-    colist = ["gold","red","violet","pink","green","violet","orange","grey","blue","yellow","cyan"]
+    colist = ["gold","violet","pink","violet","orange","yellow","cyan"]
     color_list = [random.choice(colist) for _ in range(network.number_of_nodes())]
     plt.figure(figsize=(8, 6))
     plt.title('Food Web', size=10)
-    nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=15,node_size=1000,font_size=9)
+    nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=15,node_size=1000,font_size=9,pos=nx.circular_layout(network))
     plt.show()
 
 def menu():
@@ -102,6 +102,7 @@ def relation():
     if liseaten == []:print(lt,'is not eaten by any livingthing')
     elif liseaten != []:print(lt,'is eaten by',liseaten)
 
-network = nx.DiGraph()
-makechoice(int(input('---Food Chains Program---\n1) Read File\n2) User Input\nChoice: ')))
-menu()
+if __name__ == '__main__':
+    network = nx.DiGraph()
+    makechoice(int(input('---Food Chains Program---\n1) Read File\n2) User Input\nChoice: ')))
+    menu()
