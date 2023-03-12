@@ -73,7 +73,7 @@ def displaygraph():
     color_list = [random.choice(colist) for _ in range(network.number_of_nodes())]
     plt.figure(figsize=(8, 6))
     plt.title('Food Web', size=10)
-    nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=10)
+    nx.draw_networkx(network,node_color=color_list,with_labels=True,arrows=True,arrowstyle='->',arrowsize=15,node_size=1000,font_size=9)
     plt.show()
 
 def menu():
