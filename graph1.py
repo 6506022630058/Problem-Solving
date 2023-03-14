@@ -13,12 +13,8 @@ def readfile(filename):
     filer = open(filename,'r')
     line = filer.readline().rstrip('\n').lower()
     while line != '':
-        if len(line.split()) == 2:
-            lisedg.append(tuple(swap(line.split())))
-        elif len(line.split()) == 1:
-            lisnod.append(line)
-        else:
-            pass
+        if len(line.split()) == 2:lisedg.append(tuple(swap(line.split())))
+        elif len(line.split()) == 1:lisnod.append(line)
         line = filer.readline().rstrip('\n').lower()
     filer.close()
     network.add_nodes_from(lisnod)
@@ -31,18 +27,15 @@ def inputnetwork():
         ans = input("Input: ").lower()
         if ans != 'q':
             if len(ans.split()) == 2:
-                if ans.split()[0] in network.nodes() and ans.split()[1] in network.nodes():
-                    lis.append(tuple(swap(ans.split())))
+                if ans.split()[0] in network.nodes() and ans.split()[1] in network.nodes():lis.append(tuple(swap(ans.split())))
     return lis
 
 def minmaxpath():
     print('\n--Find min-max path--')
     lc,fc,res1,resmin,resmax = '','',[],[],[]
-    while lc.lower() not in network.nodes() or fc.lower() not in network.nodes():
-        lc,fc = input('From: ').lower(),input('To: ').lower()
+    while lc.lower() not in network.nodes() or fc.lower() not in network.nodes():lc,fc = input('From: ').lower(),input('To: ').lower()
     allpath = findpath(lc,fc)
-    for i in allpath:
-        res1.append(len(i))
+    for i in allpath:res1.append(len(i))
     if res1 != []:
         print('\n-All path')
         for i in allpath:
@@ -53,16 +46,12 @@ def minmaxpath():
         for i in resmin:print(i)
         print('\n-Max path')
         for i in resmax:print(i)
-    if res1 == []:
-        print('There is no path\n')
+    if res1 == []:print('There is no path\n')
 
 def makechoice(num):
-    if num == 1:
-        readfile(input('File name: '))
-    elif num == 2:
-        userinput()
-    else:
-        makechoice(int(input(f'Error:Invalid number\n1) Read File\n2) User Input\nChoice: ')))
+    if num == 1:readfile(input('File name: '))
+    elif num == 2:userinput()
+    else:makechoice(int(input(f'Error:Invalid number\n1) Read File\n2) User Input\nChoice: ')))
         
 def userinput():
     network.add_nodes_from(inputlivingthings(int(input('\nHow many living things in this area: '))))
@@ -92,8 +81,7 @@ def menu():
 def relation():
     print('\n--Relation--')
     lt,liseat,liseaten = '',[],[]
-    while lt.lower() not in network.nodes():
-        lt = input('Living thing: ').lower()
+    while lt.lower() not in network.nodes():lt = input('Living thing: ').lower()
     for i in lisedg:
         if i[0] == lt:liseaten.append(i[1])
         elif i[1] == lt:liseat.append(i[0])
