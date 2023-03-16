@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href=pyscript.css" />
+        <script defer src="pyscript.js"></script>       
+        
+<!--    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js" onerror=scriptLoadFailure('pyscr ipt.js')></script>      -->
+
+<py-env>
+paths:
+    ./main.py
+</py-env>
+    </head>
+
+    <body>
+<py-script id="main" src="./main.py"></py-script>
+
+    <input type="file" id="fasta_1" accept=".fasta" class="form-control-file">
+    <div  id="outMsg"></div>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>Foodchain Program V.1</title>
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+        <py-env>
+            - matplotlib
+            - networkx
+        </py-env>
+    </head>
+    <body>
+        <h1 style="margin-left: 40%;margin-top: 5%;font-size: 35;"> Foodchain Program </h6>
+        <form method="post" enctype="multipart/form-data">
+        <div>
+        <label for="image_uploads">Choose file to upload (.txt)</label>
+        <input type="file" id="file_uploads" name="file_uploads" accept=".txt"/>
+        </div>
+        <div>
+        <button>Submit</button>
+        </div>
+        </form>
+        <div id="lineplot"> </div> 
+        <div style="width: 300%;margin-left: 25%;">
+        <py-script>  
+            import matplotlib.pyplot as plt
+            import networkx as nx
+
+            fig, ax = plt.subplots()
+            network = nx.DiGraph()
+            
+            def readfile(filename):
+                if filename.endswith('.txt') == False:filename += '.txt'
+                lisedg,lisnod = [],[]
+                filer = open(filename,'r')
+                line = filer.readline().rstrip('\n').lower()
+                while line != '':
+                    if len(line.split()) == 2:lisedg.append(tuple(swap(line.split())))
+                    elif len(line.split()) == 1:lisnod.append(line)
+                    line = filer.readline().rstrip('\n').lower()
+                filer.close()
+                network.add_nodes_from(lisnod)
+                network.add_edges_from(lisedg)
+            
+            lisnod = ['snake', 'eagle', 'wolf', 'rat', 'frog', 'bird', 'dragonfly', 'fruitfly', 'grasshopper', 'butterfly', 'corn', 'flower', 'mango']
+            lisedg = [('snake', 'eagle'), ('wolf', 'eagle'), ('rat', 'eagle'), ('frog', 'eagle'), ('bird', 'eagle'), ('rat', 'snake'), ('frog', 'snake'), ('wolf', 'snake'), ('rat', 'wolf'), ('bird', 'wolf'), ('dragonfly', 'bird'), ('fruitfly', 'bird'), ('grasshopper', 'rat'), ('grasshopper', 'frog'), ('butterfly', 'frog'), ('dragonfly', 'frog'), ('fruitfly', 'frog'), ('butterfly', 'dragonfly'), ('fruitfly', 'dragonfly'), ('corn', 'grasshopper'), ('flower', 'butterfly'), ('mango', 'fruitfly')]
+            network.add_nodes_from(lisnod)
+            network.add_edges_from(lisedg)
+            nx.draw(network,with_labels=True,arrows=True,arrowstyle='->',arrowsize=15,pos=nx.circular_layout(network),node_size=1000,font_size=9)
+            fig
+        </div>
+        </py-script>
+    </body>
+</html>
+
+
